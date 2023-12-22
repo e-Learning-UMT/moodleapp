@@ -16,7 +16,7 @@ COPY . /app
 RUN ${build_command}
 
 ## SERVE STAGE
-FROM nginx:alpine as serve-stage
+FROM nginx:1.25.3-alpine3.18 as serve-stage
 
 # Copy assets & config
 COPY --from=build-stage /app/www /usr/share/nginx/html

@@ -41,6 +41,7 @@
 }
 
 ion-tab-bar {
+    order: 100; // Keep at the bottom.
     --background: var(--core-bottom-tabs-background);
     --color: var(--core-bottom-tabs-color);
     --color-selected: var(--core-bottom-tabs-color-selected);
@@ -140,7 +141,7 @@ ion-tabs {
                 transform: translateY(0) !important;
             }
         } @else {
-            &.tabshidden ion-tab-bar {
+            &.tabshidden > ion-tab-bar {
                 pointer-events: none;
                 height: 0px;
                 border: 0px;

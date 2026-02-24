@@ -1,5 +1,6 @@
-<ion-tabs #mainTabs [hidden]="!showTabs" [class]="'placement-' + tabsPlacement()"  (ionTabsDidChange)="tabChanged($event)"
-    [class.tabshidden]="hiddenAnimationFinished()">
+<ion-tabs #mainTabs [hidden]="!showTabs" [class]="'placement-' + tabsPlacement() + ' tab-'+selectedTab"
+    (ionTabsDidChange)="tabChanged($event)" [class.tabshidden]="hiddenAnimationFinished()">
+
     <ion-tab-bar [slot]="tabsPlacement() === 'side' ? 'top' : 'bottom'" class="mainmenu-tabs"
         [class.slide-in-bottom-animation]="visibility() === 'visible'" [class.slide-out-bottom-animation]="visibility() === 'hidden'">
         <core-loading [hideUntil]="loaded()" [placeholderType]="tabsPlacement() === 'bottom' ? 'rowwrap' : 'column'"

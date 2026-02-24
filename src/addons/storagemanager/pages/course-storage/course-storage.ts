@@ -115,7 +115,7 @@ export default class AddonStorageManagerCourseStoragePage implements OnInit, OnD
         }
 
         this.title = CoreNavigator.getRouteParam<string>('title') || '';
-        if (!this.title && this.courseId == CoreSites.getCurrentSiteHomeId()) {
+        if (!this.title && this.courseId === CoreSites.getCurrentSiteHomeId()) {
             this.title = Translate.instant('core.sitehome.sitehome');
         }
 
@@ -246,7 +246,7 @@ export default class AddonStorageManagerCourseStoragePage implements OnInit, OnD
         this.sectionStatusObserver = CoreEvents.on(
             CoreEvents.SECTION_STATUS_CHANGED,
             async (data) => {
-                if (!this.downloadEnabled || !this.sections.length || !data.sectionId || data.courseId != this.courseId) {
+                if (!this.downloadEnabled || !this.sections.length || !data.sectionId || data.courseId !== this.courseId) {
                     return;
                 }
 

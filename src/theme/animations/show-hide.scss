@@ -1,5 +1,6 @@
 
 .show-animation {
+    will-change: opacity;
     animation: fadeIn 500ms ease-in-out;
 }
 
@@ -14,6 +15,7 @@
 }
 
 .hide-animation {
+    will-change: opacity;
     animation: fadeOut 500ms ease-in-out;
 }
 

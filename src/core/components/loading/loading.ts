@@ -117,6 +117,18 @@ export class CoreLoadingComponent implements AsyncDirective, OnDestroy {
                 if (CorePlatform.isIOS()) {
                     this.mutationObserver.observe(this.element, { childList: true });
                 }
+
+                // Emulate leave animation by adding a class and removing the element after the animation is done.
+                // This is needed to solve animation.leave problem introduced in Angular 20.3.6.
+                // @TODO: Remove this workaround when updating to Angular v21, as the problem should be fixed by then.
+                const container = this.element.querySelector('.core-loading-container');
+                if (container && !container.classList.contains('hide-animation')) {
+                    container.classList.add('hide-animation');
+
+                    setTimeout(() => {
+                        container.remove();
+                    }, 500);
+                }
             } else {
                 this.mutationObserver.disconnect();
             }

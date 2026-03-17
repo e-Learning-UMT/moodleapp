@@ -23,8 +23,8 @@ import { AsyncInstance, AsyncObject, asyncInstance } from '@/core/utils/async-in
 @Injectable({ providedIn: 'root' })
 export class CoreNativeService {
 
+    private static mocks: Partial<Record<keyof MoodleAppPlugins, MoodleAppPlugins[keyof MoodleAppPlugins]>> = {};
     private plugins: Partial<Record<keyof MoodleAppPlugins, AsyncInstance<AsyncObject>>> = {};
-    private mocks: Partial<Record<keyof MoodleAppPlugins, MoodleAppPlugins[keyof MoodleAppPlugins]>> = {};
 
     /**
      * Get a native plugin instance.
@@ -41,7 +41,10 @@ export class CoreNativeService {
             this.plugins[plugin] = asyncInstance(async () => {
                 await CorePlatform.ready();
 
-                const instance = CorePlatform.isMobile() ? window.cordova?.MoodleApp?.[plugin] : this.mocks[plugin];
+                const mocks = CoreNativeService.mocks;
+                const instance = CorePlatform.isMobile()
+                    ? window.cordova?.MoodleApp?.[plugin] ?? mocks[plugin]
+                    : mocks[plugin];
                 if (!instance) {
                     throw new Error(`Plugin ${plugin} not found.`);
                 }
@@ -60,6 +63,19 @@ export class CoreNativeService {
      * @param instance Instance to use.
      */
     registerBrowserMock<Plugin extends keyof MoodleAppPlugins>(plugin: Plugin, instance: MoodleAppPlugins[Plugin]): void {
+        CoreNativeService.registerBrowserMock(plugin, instance);
+    }
+
+    /**
+     * Register a mock without requiring the singleton injector to be ready yet.
+     *
+     * @param plugin Plugin name.
+     * @param instance Instance to use.
+     */
+    static registerBrowserMock<Plugin extends keyof MoodleAppPlugins>(
+        plugin: Plugin,
+        instance: MoodleAppPlugins[Plugin],
+    ): void {
         this.mocks[plugin] = instance;
     }
 

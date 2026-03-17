@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import { CoreAutoLogout } from '@features/autologout/services/autologout';
+import { SecureStorageMock } from '@features/emulator/classes/SecureStorage';
+import { CoreNativeService } from '@features/native/services/native';
 import { CoreConfig } from '@services/config';
 import { CoreFilepool } from '@services/filepool';
 import { CoreLang } from '@services/lang';
@@ -26,6 +28,8 @@ import { CoreTime } from '@static/time';
  * Initializes various core components asynchronously.
  */
 export default async function(): Promise<void> {
+    CoreNativeService.registerBrowserMock('secureStorage', new SecureStorageMock());
+
     await Promise.all([
         CoreConfig.initialize(),
         CoreFilepool.initialize(),

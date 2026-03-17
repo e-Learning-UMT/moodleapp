@@ -92,11 +92,11 @@ import { CoreDbProviderMock } from '@features/emulator/services/db';
             useFactory: (): CoreDbProvider => CorePlatform.isMobile() ? new CoreDbProvider() : new CoreDbProviderMock(),
         },
         provideAppInitializer(async () => {
+            CoreNative.registerBrowserMock('secureStorage', new SecureStorageMock());
+
             if (CorePlatform.isMobile()) {
                 return;
             }
-
-            CoreNative.registerBrowserMock('secureStorage', new SecureStorageMock());
 
             await CoreEmulatorHelper.load();
         }),

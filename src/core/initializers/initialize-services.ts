@@ -14,6 +14,7 @@
 
 import { CoreAutoLogout } from '@features/autologout/services/autologout';
 import { SecureStorageMock } from '@features/emulator/classes/SecureStorage';
+import { CoreBiometric } from '@features/login/services/biometric';
 import { CoreNativeService } from '@features/native/services/native';
 import { CoreConfig } from '@services/config';
 import { CoreFilepool } from '@services/filepool';
@@ -37,6 +38,7 @@ export default async function(): Promise<void> {
         CoreLang.initialize(),
         CoreLocalNotifications.initialize(),
         CoreNetwork.initialize(),
+        CoreBiometric.initialize(),
         CoreUpdateManager.initialize(),
         CoreTime.initialize(),
         CoreAutoLogout.initialize(),

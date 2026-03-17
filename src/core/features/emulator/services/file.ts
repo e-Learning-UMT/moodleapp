@@ -756,7 +756,7 @@ export class FileMock extends File {
                     resolve();
                 }
             };
-            writer.write(<string> data);
+            writer.write(new Blob([data]));
         });
     }
 

@@ -18,6 +18,8 @@ import { Routes } from '@angular/router';
 import { AppRoutingModule, conditionalRoutes } from '@/app/app-routing.module';
 import { CoreMainMenuTabRoutingModule } from '@features/mainmenu/mainmenu-tab-routing.module';
 import { CoreSettingsHelper } from './services/settings-helper';
+import { CoreBiometricSettingsHandler } from './services/handlers/biometric';
+import { CoreSettingsDelegate } from './services/settings-delegate';
 import { SHAREDFILES_PAGE_NAME } from '@features/sharedfiles/constants';
 import { getSharedFilesRoutes } from '@features/sharedfiles/sharedfiles.module';
 import { CoreScreen } from '@services/screen';
@@ -142,6 +144,9 @@ const mainMenuMoreRoutes: Routes = [
     ],
     providers: [
         provideAppInitializer(() => CoreSettingsHelper.initialize()),
+        provideAppInitializer(() => {
+            CoreSettingsDelegate.registerHandler(CoreBiometricSettingsHandler.instance);
+        }),
     ],
 })
 export class CoreSettingsModule {}

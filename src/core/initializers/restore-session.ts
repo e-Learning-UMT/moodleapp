@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { CoreBiometric } from '@features/login/services/biometric';
 import { CoreSites } from '@services/sites';
 import { CoreUpdateManager } from '@services/update-manager';
 
@@ -22,4 +23,5 @@ export default async function(): Promise<void> {
     await CoreUpdateManager.donePromise;
 
     await CoreSites.restoreSession();
+    await CoreBiometric.handleColdStartUnlock();
 }

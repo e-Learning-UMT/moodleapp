@@ -76,3 +76,11 @@ Thumbs.db
 
 /moodle.config.*.json
 !/moodle.config.example.json
+
+# Local Android build artifacts
+/.gradle-local
+/.ionic-local
+/*.apk
+/*.apk.idsig
+/elearning.jks
+/moodleapp.iml

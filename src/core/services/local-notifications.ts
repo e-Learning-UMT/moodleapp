@@ -80,8 +80,8 @@ export class CoreLocalNotificationsProvider {
     async initialize(): Promise<void> {
         await CorePlatform.ready();
 
-        // Request permission when the app starts.
-        LocalNotifications.requestPermission();
+        // Try to request notification permission on startup, but don't block app initialization on it.
+        void this.requestNotificationsPermission();
 
         // Listen to events.
         this.triggerSubscription = LocalNotifications.on('trigger').subscribe((notification: ILocalNotification) => {
@@ -146,6 +146,8 @@ export class CoreLocalNotificationsProvider {
         });
 
         CoreEvents.on(CoreEvents.LOGIN, async () => {
+            await this.showNotificationsPermissionPromptIfNeeded();
+
             const [hasNotificationsPermission, canScheduleExact] = await Promise.all([
                 this.hasNotificationsPermission(),
                 this.canScheduleExactAlarms(),
@@ -179,6 +181,25 @@ export class CoreLocalNotificationsProvider {
 
             CoreConfig.set(CoreConfigSettingKey.EXACT_ALARMS_WARNING_DISPLAYED, 1);
         });
+    }
+
+    /**
+     * Request notifications permission from the OS.
+     *
+     * @returns Whether permission was granted.
+     */
+    async requestNotificationsPermission(): Promise<boolean> {
+        if (!CorePlatform.isMobile()) {
+            return true;
+        }
+
+        try {
+            return await LocalNotifications.requestPermission();
+        } catch (error) {
+            this.logger.warn('Error requesting notifications permission', error);
+
+            return false;
+        }
     }
 
     /**
@@ -230,6 +251,48 @@ export class CoreLocalNotificationsProvider {
         }
 
         return LocalNotifications.hasPermission();
+    }
+
+    /**
+     * Prompt the user to enable notifications if permission hasn't been granted yet.
+     *
+     * @returns Whether permission is granted after the prompt.
+     */
+    protected async showNotificationsPermissionPromptIfNeeded(): Promise<boolean> {
+        const hasPermission = await this.hasNotificationsPermission();
+        if (hasPermission) {
+            return true;
+        }
+
+        const dontShowWarning = await CoreConfig.get(CoreConfigSettingKey.DONT_SHOW_NOTIFICATIONS_PERMISSION_WARNING, 0);
+        if (dontShowWarning) {
+            return false;
+        }
+
+        let requestedPermission = false;
+
+        await CoreAlerts.show({
+            header: Translate.instant('core.turnonnotifications'),
+            message: Translate.instant('core.turnonnotificationsmessage'),
+            buttons: [
+                {
+                    text: Translate.instant('core.notnow'),
+                    role: 'cancel',
+                },
+                {
+                    text: Translate.instant('core.turnon'),
+                    handler: (): void => {
+                        requestedPermission = true;
+                    },
+                },
+            ],
+        });
+
+        if (!requestedPermission) {
+            return false;
+        }
+
+        return await this.requestNotificationsPermission();
     }
 
     /**

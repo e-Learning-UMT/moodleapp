@@ -80,6 +80,7 @@ Thumbs.db
 # Local Android build artifacts
 /.gradle-local
 /.ionic-local
+/google-services.json
 /*.apk
 /*.apk.idsig
 /elearning.jks

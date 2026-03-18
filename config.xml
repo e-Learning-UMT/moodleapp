@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="52000" id="com.moodle.moodlemobile" ios-CFBundleVersion="5.2.0.0" version="5.2.0" versionCode="52000" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Moodle</name>
-    <description>Moodle official app</description>
-    <author email="mobile@moodle.com" href="http://moodle.com">Moodle Mobile team</author>
+<widget android-versionCode="52000" id="my.edu.lentera.mobile" ios-CFBundleVersion="5.2.0.0" version="5.2.0" versionCode="52000" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Lentera Mobile</name>
+    <description>Official Universiti Malaysia Terengganu e-Learning App</description>
+    <author email="el@umt.edu.my" href="http://elearninghub.umt.edu.my">e-Learning Team</author>
     <content src="index.html" />
     <access origin="*" />
     <access launch-external="yes" origin="tel:*" />
@@ -53,32 +53,30 @@
     <preference name="GradlePluginGoogleServicesVersion" value="4.4.2" />
     <preference name="GradlePluginKotlinVersion" value="1.9.24" />
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="StatusBarBackgroundColor" value="#FFFFFF" />
-    <preference name="NavigationBarBackgroundColor" value="#FFFFFF" />
-    <preference name="AndroidEdgeToEdge" value="true" />
+    <preference name="StatusBarBackgroundColor" value="#003366" />
+    <preference name="NavigationBarBackgroundColor" value="#003366" />
+    <preference name="AndroidEdgeToEdge" value="false" />
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
+    <icon src="resources/icon.png" />
     <platform name="android">
-        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/android/android-splash.xml" />
-        <preference name="AndroidWindowSplashScreenBackground" value="#FFFFFF" />
-        <preference name="AndroidWindowSplashScreenIconBackgroundColor" value="#FFFFFF" />
+        <preference name="AndroidWindowSplashScreenBackground" value="#003366" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/android/splash-icon.png" />
         <resource-file src="google-services.json" target="app/google-services.json" />
-        <resource-file src="resources/android/icon/drawable-ldpi-smallicon.png" target="app/src/main/res/mipmap-ldpi/smallicon.png" />
-        <resource-file src="resources/android/icon/drawable-mdpi-smallicon.png" target="app/src/main/res/mipmap-mdpi/smallicon.png" />
-        <resource-file src="resources/android/icon/drawable-hdpi-smallicon.png" target="app/src/main/res/mipmap-hdpi/smallicon.png" />
-        <resource-file src="resources/android/icon/drawable-xhdpi-smallicon.png" target="app/src/main/res/mipmap-xhdpi/smallicon.png" />
+        <icon background="#003366" foreground="resources/android/icon-foreground.png" src="resources/android/icon/drawable-xhdpi-icon.png" />
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:allowBackup="false" android:largeHeap="true" android:networkSecurityConfig="@xml/network_security_config" />
         </edit-config>
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application/activity">
-            <activity android:enableOnBackInvokedCallback="false" />
+            <activity android:enableOnBackInvokedCallback="false" android:theme="@style/Theme.App.SplashScreen" />
         </edit-config>
         <config-file parent="/manifest/application" target="AndroidManifest.xml">
             <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
             <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
             <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
         </config-file>
@@ -90,6 +88,9 @@
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
             <string>We need photo library access to get pictures from there so you can use them for changing your profile picture, attach them in your tasks submission and share them with the teachers.</string>
+        </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="NSFaceIDUsageDescription">
+            <string>We use FaceID to log you in securely to Lentera.</string>
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="UISupportsDocumentBrowser">
             <true />

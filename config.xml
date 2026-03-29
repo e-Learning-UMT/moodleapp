@@ -37,7 +37,8 @@
     <preference name="AllowInlineMediaPlayback" value="true" />
     <preference name="LoadUrlTimeoutValue" value="60000" />
     <preference name="load-url-timeout" value="60000" />
-    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="SplashScreenDelay" value="3000" />
     <preference name="android-minSdkVersion" value="24" />
     <preference name="android-targetSdkVersion" value="36" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
@@ -64,7 +65,10 @@
         <preference name="AndroidWindowSplashScreenBackground" value="#003366" />
         <preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/android/splash-icon.png" />
         <resource-file src="google-services.json" target="app/google-services.json" />
-        <icon background="#003366" foreground="resources/android/icon-foreground.png" src="resources/android/icon/drawable-xhdpi-icon.png" />
+        <icon density="ldpi" src="resources/android/icon/drawable-ldpi-smallicon.png" />
+        <icon density="mdpi" src="resources/android/icon/drawable-mdpi-smallicon.png" />
+        <icon density="hdpi" src="resources/android/icon/drawable-hdpi-smallicon.png" />
+        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-smallicon.png" />
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:allowBackup="false" android:largeHeap="true" android:networkSecurityConfig="@xml/network_security_config" />

@@ -69,7 +69,7 @@ Feature: Test basic usage of login in app
     And I press "Edit accounts list" in the app
     And I press "Remove account" near "Acceptance test site" in the app
     And I press "Delete" near "Are you sure you want to remove the account on Acceptance test site?" in the app
-    Then I should find "Connect to Moodle" in the app
+    Then I should find "Connect To Lentera" in the app
     But I should not find "Acceptance test site" in the app
 
   Scenario: Require minium (previous) version of the app for a site

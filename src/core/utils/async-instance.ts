@@ -205,6 +205,13 @@ export function asyncInstance<TLazyInstance extends TEagerInstance, TEagerInstan
 
     return new Proxy(wrapper, {
         get: (target, p, receiver) => {
+            // Prevent Promise/await assimilation:
+            // If a Proxy exposes a callable `then`, JavaScript will treat it as a thenable and call it when awaited,
+            // which can lead to confusing startup errors like "'then' is not a function".
+            if (p === 'then') {
+                return undefined;
+            }
+
             const property = p as keyof TEagerInstance;
 
             if (property in target) {

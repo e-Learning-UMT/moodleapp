@@ -20,6 +20,7 @@ import { CoreLoginHelper } from '@features/login/services/login-helper';
 import { SplashScreen } from '@singletons';
 import { CoreApp } from '@services/app';
 import { CoreNavigator } from '@services/navigator';
+import { CoreSites } from '@services/sites';
 import { CoreSubscriptions } from '@static/subscriptions';
 import { CoreWindow } from '@static/window';
 import { CorePlatform } from '@services/platform';
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     readonly outlet = viewChild.required(IonRouterOutlet);
 
     protected logger = CoreLogger.getInstance('AppComponent');
+    protected splashHidden = false;
 
     /**
      * @inheritdoc
@@ -131,13 +133,56 @@ export class AppComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         this.logger.debug('App component initialized');
 
+        CorePlatform.ready().then(() => {
+            window.setTimeout(() => {
+                this.hideSplashScreen('startup timeout');
+            }, 4000);
+
+            window.setTimeout(() => {
+                void this.ensureInitialRoute();
+            }, 4500);
+        });
+
         CoreSubscriptions.once(this.outlet().activateEvents, async () => {
             await CorePlatform.ready();
 
-            this.logger.debug('Hide splash screen');
-            SplashScreen.hide();
-            this.setSystemUIColorsAfterSplash();
+            this.hideSplashScreen('first route activation');
         });
+    }
+
+    /**
+     * Hide the splash screen once and update the system UI afterwards.
+     *
+     * @param reason Reason why the splash is being hidden.
+     */
+    protected hideSplashScreen(reason: string): void {
+        if (this.splashHidden) {
+            return;
+        }
+
+        this.splashHidden = true;
+
+        this.logger.debug(`Hide splash screen (${reason})`);
+        SplashScreen.hide();
+        void this.setSystemUIColorsAfterSplash();
+    }
+
+    /**
+     * Ensure the app doesn't stay on an empty root route during startup.
+     */
+    protected async ensureInitialRoute(): Promise<void> {
+        const currentPath = CoreNavigator.getCurrentPath();
+        if (currentPath !== '' && currentPath !== '/') {
+            return;
+        }
+
+        if (CoreSites.isLoggedIn()) {
+            await CoreNavigator.navigate('/main', { reset: true });
+            return;
+        }
+
+        const hasSites = await CoreSites.hasSites();
+        await CoreNavigator.navigate(hasSites ? '/login/sites' : '/login/site', { reset: true });
     }
 
     /**

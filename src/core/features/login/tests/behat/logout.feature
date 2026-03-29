@@ -30,7 +30,7 @@ Feature: Test different cases of logout and switch account
     And I press "Switch account" in the app
     And I press "Add" in the app
     And I wait the app to restart
-    Then I should find "Connect to Moodle" in the app
+    Then I should find "Connect To Lentera" in the app
 
     When I go back in the app
     And I press "david student" in the app

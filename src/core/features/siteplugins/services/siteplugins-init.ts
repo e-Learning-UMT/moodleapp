@@ -91,6 +91,7 @@ import { CoreSitePluginsEnrolHandler } from '../classes/handlers/enrol-handler';
 import { CORE_SITE_PLUGINS_COMPONENT } from '../constants';
 import { CORE_COURSES_MY_COURSES_CHANGED_EVENT } from '@features/courses/constants';
 import { CoreSitePluginsBaseHandler } from '../classes/handlers/base-handler';
+import { CoreConstants } from '@/core/constants';
 
 /**
  * Helper service to provide functionalities regarding site plugins. It basically has the features to load and register site
@@ -119,6 +120,17 @@ export class CoreSitePluginsInitService {
      * Initialize.
      */
     init(): void {
+        if (CoreConstants.CONFIG.disableSitePlugins) {
+            this.logger.warn('Site plugins are disabled by app configuration.');
+
+            // Ensure code waiting for plugins fetch/load doesn't hang forever.
+            CoreSitePlugins.setPluginsLoaded(false);
+            CoreSitePlugins.setPluginsFetched();
+            CoreSitePlugins.sitePluginsFinishedLoading = true;
+
+            return;
+        }
+
         // Fetch the plugins on login.
         CoreEvents.on(CoreEvents.LOGIN, async (data) => {
             try {

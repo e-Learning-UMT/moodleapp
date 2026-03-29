@@ -100,10 +100,6 @@
                             <h2 class="item-heading">{{ 'core.login.selectsite' | translate }}</h2>
                         </ion-label>
                     </ion-item>
-                    @if (fixedSites.length > 4) {
-                        <ion-searchbar [(ngModel)]="filter" (ionInput)="filterChanged($event)" (ionCancel)="filterChanged()"
-                            [placeholder]="'core.login.findyoursite' | translate" />
-                    }
                     <ng-container *ngFor="let site of filteredSites">
                         <ng-container *ngTemplateOutlet="sitelisting; context: {site: site}" />
                     </ng-container>

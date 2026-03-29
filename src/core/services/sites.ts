@@ -1789,24 +1789,7 @@ export class CoreSitesProvider {
      * Handle auto logout by checking autologout type and time if its required.
      */
     async handleAutoLogout(): Promise<void> {
-        await CorePromiseUtils.ignoreErrors(( async () => {
-            const siteId = await this.getStoredCurrentSiteId();
-            const site = await this.getSite(siteId);
-            const autoLogoutType = Number(site.getStoredConfig('tool_mobile_autologout'));
-            const autoLogoutTime = Number(site.getStoredConfig('tool_mobile_autologouttime'));
-
-            if (!autoLogoutType || autoLogoutType === CoreAutoLogoutType.NEVER || !site.id) {
-                return;
-            }
-
-            if (autoLogoutType === CoreAutoLogoutType.CUSTOM) {
-                await CoreAutoLogout.handleSessionClosed(autoLogoutTime, site);
-
-                return;
-            }
-
-            await CoreAutoLogout.handleAppClosed(site);
-        })());
+        return;
     }
 
     /**

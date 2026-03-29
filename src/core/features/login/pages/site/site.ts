@@ -86,7 +86,6 @@ export default class CoreLoginSitePage implements OnInit {
      * @inheritdoc
      */
     async ngOnInit(): Promise<void> {
-        let url = '';
         this.siteSelector = CoreConstants.CONFIG.multisitesdisplay;
 
         const siteFinderSettings: Partial<CoreLoginSiteFinderSettings> = CoreConstants.CONFIG.sitefindersettings || {};
@@ -100,24 +99,11 @@ export default class CoreLoginSitePage implements OnInit {
             ...siteFinderSettings,
         };
 
-        // Load fixed sites if they're set.
-        const sites = await CoreLoginHelper.getAvailableSites();
-
-        if (sites.length) {
-            url = await this.initSiteSelector();
-        } else {
-            url = await this.consumeInstallReferrerUrl() ?? '';
-
-            if (url) {
-                this.connect(url);
-            }
-        }
+        this.siteForm = this.formBuilder.group({
+            siteUrl: ['', this.moodleUrlValidator()],
+        });
 
         this.showScanQR = CoreLoginHelper.displayQRInSiteScreen();
-
-        this.siteForm = this.formBuilder.group({
-            siteUrl: [url, this.moodleUrlValidator()],
-        });
 
         this.searchFunction = CoreUtils.debounce(async (search: string) => {
             search = search.trim();
@@ -139,6 +125,31 @@ export default class CoreLoginSitePage implements OnInit {
         }, 1000);
 
         this.showKeyboard = !!CoreNavigator.getRouteBooleanParam('showKeyboard');
+
+        await this.initializeSiteScreen();
+    }
+
+    /**
+     * Load site selector data without blocking the initial form render.
+     */
+    protected async initializeSiteScreen(): Promise<void> {
+        let url = '';
+
+        const sites = await CoreLoginHelper.getAvailableSites();
+
+        if (sites.length) {
+            url = await this.initSiteSelector();
+        } else {
+            url = await this.consumeInstallReferrerUrl() ?? '';
+        }
+
+        if (url) {
+            this.siteForm.patchValue({ siteUrl: url });
+        }
+
+        if (url && !sites.length) {
+            void this.connect(url);
+        }
     }
 
     /**

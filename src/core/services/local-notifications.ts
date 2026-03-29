@@ -80,8 +80,8 @@ export class CoreLocalNotificationsProvider {
     async initialize(): Promise<void> {
         await CorePlatform.ready();
 
-        // Try to request notification permission on startup, but don't block app initialization on it.
-        void this.requestNotificationsPermission();
+        // Ask for notification permission after app initialization so Android can show the system prompt reliably.
+        void this.requestNotificationsPermissionOnStartup();
 
         // Listen to events.
         this.triggerSubscription = LocalNotifications.on('trigger').subscribe((notification: ILocalNotification) => {
@@ -200,6 +200,23 @@ export class CoreLocalNotificationsProvider {
 
             return false;
         }
+    }
+
+    /**
+     * Request notifications permission once the app is ready.
+     *
+     * @returns Promise resolved when the request has been attempted.
+     */
+    protected async requestNotificationsPermissionOnStartup(): Promise<void> {
+        await ApplicationInit.donePromise;
+        await CoreWait.wait(750);
+
+        const hasPermission = await this.hasNotificationsPermission();
+        if (hasPermission) {
+            return;
+        }
+
+        await this.requestNotificationsPermission();
     }
 
     /**

@@ -46,7 +46,8 @@ export class AddonRemoteThemesHandlerService implements CoreStyleHandler {
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async isEnabled(siteId: string, config?: CoreSitePublicConfigResponse): Promise<boolean> {
-        return true;
+        // Disable remote themes to avoid startup white screens caused by broken site-provided CSS.
+        return false;
     }
 
     /**

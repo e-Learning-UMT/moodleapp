@@ -1,6 +1,6 @@
 {
-    "app_id": "com.moodle.moodlemobile",
-    "appname": "Moodle Mobile",
+    "app_id": "my.edu.lentera.mobile",
+    "appname": "Lentera Mobile",
     "versioncode": 52000,
     "versionname": "5.2.0",
     "cache_update_frequency_usually": 420000,
@@ -87,16 +87,53 @@
         "high": 120
     },
     "customurlscheme": "moodlemobile",
-    "sites": [],
-    "multisitesdisplay": "",
-    "sitefindersettings": {},
-    "onlyallowlistedsites": false,
+    "sites": [
+        {
+            "name": "Oceania - Undergraduate Students",
+            "url": "https://epembelajaran.umt.edu.my/oceania",
+            "imageurl": "assets/img/sites/oceania.png"
+        },
+        {
+            "name": "Oasis - Postgraduate Students",
+            "url": "https://epembelajaran.umt.edu.my/oasis",
+            "imageurl": "assets/img/sites/oasis.png"
+        },
+        {
+            "name": "Wadi - Diploma and Asasi Students",
+            "url": "https://epembelajaran.umt.edu.my/wadi",
+            "imageurl": "assets/img/sites/wadi.png"
+        },
+        {
+            "name": "Estuary - Open Distance Learning Platform",
+            "url": "https://epembelajaran.umt.edu.my/estuary",
+            "imageurl": "assets/img/sites/estuary.png"
+        },
+        {
+            "name": "Bayou - Massive Open Online Course and Microcredential Courses",
+            "url": "https://bayou.umt.edu.my/",
+            "imageurl": "assets/img/sites/bayou.png"
+        },
+        {
+            "name": "Laksamana - Open Educational Resources Platform",
+            "url": "https://epembelalajaran.umt.edu.my/laksamana",
+            "imageurl": "assets/img/sites/ocw.png"
+        }
+    ],
+    "multisitesdisplay": "list",
+    "sitefindersettings": {
+        "displayimage": true,
+        "displayalias": false,
+        "displaycity": false,
+        "displaycountry": false,
+        "displayurl": false
+    },
+    "onlyallowlistedsites": true,
     "forcedefaultlanguage": false,
     "privacypolicy": "https://moodle.net/moodle-app-privacy/",
     "notificoncolor": "#f98012",
     "enableanalytics": false,
     "forceColorScheme": "",
-    "forceLoginLogo": false,
+    "forceLoginLogo": true,
     "showTopLogo": "hidden",
     "ioswebviewscheme": "moodleappfs",
     "appstores": {
@@ -111,6 +148,7 @@
         "long": 3500,
         "sticky": 0
     },
+    "disableSitePlugins": true,
     "disableTokenFile": false,
     "iconsPrefixes": {
         "font-awesome": {
@@ -134,6 +172,5 @@
             ]
         }
     },
-    "clearIABSessionWhenAutoLogin": "android",
     "collapsibleItemsExpanded": false
 }

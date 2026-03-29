@@ -1,7 +1,7 @@
 @use "theme/globals" as *;
 
 :host {
-    --list-item-max-width: 600px;
+    --list-item-max-width: 680px;
 }
 
 .core-login-site-connect {
@@ -95,6 +95,24 @@
 .item.core-login-site-list-title {
     ion-label, ion-label h2.item-heading {
         margin-top: 0;
+    }
+}
+
+ion-list ion-item {
+    --inner-padding-top: 8px;
+    --inner-padding-bottom: 8px;
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+
+    ion-label {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    p.item-heading {
+        font-size: 0.98rem;
+        line-height: 1.25;
+        margin: 0;
     }
 }
 

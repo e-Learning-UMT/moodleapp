@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { enableProdMode, importProvidersFrom, provideAppInitializer } from '@angular/core';
+import { enableProdMode, ErrorHandler, importProvidersFrom, provideAppInitializer } from '@angular/core';
 
 import { CoreConstants } from './core/constants';
 import { AppComponent } from './app/app.component';
@@ -31,10 +31,23 @@ import { IonicRouteStrategy, IonicModule } from '@ionic/angular';
 import { RouteReuseStrategy } from '@angular/router';
 import { coreInterceptorFn } from '@classes/interceptor';
 import { MoodleTranslateLoader } from '@classes/lang-loader';
+import { CoreAngularErrorHandler } from '@services/angular-error-handler';
 
 if (CoreConstants.BUILD.isProduction) {
     enableProdMode();
 }
+
+window.addEventListener('error', event => {
+    // eslint-disable-next-line no-console
+    console.error('BOOT_ERROR', event.error?.stack || event.error || event.message);
+});
+
+window.addEventListener('unhandledrejection', event => {
+    const reason = event.reason;
+
+    // eslint-disable-next-line no-console
+    console.error('BOOT_REJECTION', reason?.stack || reason);
+});
 
 bootstrapApplication(AppComponent, {
     providers: [
@@ -66,8 +79,10 @@ bootstrapApplication(AppComponent, {
         provideAnimations(),
         // HttpClient is used to make JSON requests. It fails for HEAD requests because there is no content.
         provideHttpClient(withInterceptors([coreInterceptorFn])),
+        // Must be last so it overrides any ErrorHandler provided by imported modules.
+        { provide: ErrorHandler, useClass: CoreAngularErrorHandler },
     ],
 }).catch(err => {
     // eslint-disable-next-line no-console
-    console.log(err);
+    console.error('BOOTSTRAP_CATCH', err?.stack || err);
 });

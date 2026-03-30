@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
+    <!-- Keep cleartext allowed because Cordova uses http://localhost for WebView assets. -->
     <base-config cleartextTrafficPermitted="true" />
+
+    <!--
+      If your Moodle sites use an internal CA / self-signed cert, install that CA on the device.
+      This config allows trusting user-installed CAs, but only for the UMT domains.
+      This is safer than disabling TLS checks globally.
+    -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">epembelajaran.umt.edu.my</domain>
+        <domain includeSubdomains="true">bayou.umt.edu.my</domain>
+
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+            <!-- Bundled intermediate(s) for the UMT wildcard certificate chain. -->
+            <certificates src="@raw/umt_ca_bundle" />
+        </trust-anchors>
+    </domain-config>
 </network-security-config>

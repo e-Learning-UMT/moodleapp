@@ -1,7 +1,7 @@
 {
     "app_id": "my.edu.lentera.mobile",
     "appname": "Lentera Mobile",
-    "versioncode": 52000,
+    "versioncode": 52001,
     "versionname": "5.2.0",
     "cache_update_frequency_usually": 420000,
     "cache_update_frequency_often": 1200000,

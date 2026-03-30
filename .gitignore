@@ -84,4 +84,6 @@ Thumbs.db
 /*.apk
 /*.apk.idsig
 /elearning.jks
+/platforms/android/release-signing.properties
+/platforms/android/debug-signing.properties
 /moodleapp.iml
